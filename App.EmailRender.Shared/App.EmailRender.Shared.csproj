@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PackageId>App.EmailRender.Shared</PackageId>
+    <Version>2.0.1</Version>
+    <Authors>MARCZAK0000</Authors>
+    <Description>Email Render Shared</Description>
+    <PackageTags>email, email render shared</PackageTags>
+  </PropertyGroup>
+
+</Project>
