@@ -1,4 +1,5 @@
 ﻿
+using App.EmailRender.Shared.Abstraction;
 using App.RenderEmail.RenderEmail;
 using App.RenderEmail.Repository;
 using App.RenderEmail.Strategy;

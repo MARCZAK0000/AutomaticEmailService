@@ -41,7 +41,7 @@ namespace App.RenderEmail.RenderEmail
         /// <param name="parameters">The parameters required to render the header component. This must be a reference type.</param>
         /// <returns>A <see cref="RenderEmailBuilder"/> instance with the header set, allowing for method chaining.</returns>
         public async Task<RenderEmailBuilder> SetHeader<TEnum, TParameters>(TEnum headerEnum, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
-            where TEnum : Enum where TParameters : class
+            where TEnum : Enum where TParameters : IEmailParameters
         {
             Header = await RenderComponent(headerEnum, renderTemplateStrategy, parameters);
             return this;
@@ -59,7 +59,7 @@ namespace App.RenderEmail.RenderEmail
         /// <param name="parameters">The parameters to use when rendering the selected template. Must be a reference type.</param>
         /// <returns>A <see cref="RenderEmailBuilder"/> instance with the rendered body set, allowing for method chaining.</returns>
         public async Task<RenderEmailBuilder> SetBody<TEnum, TParameters>(TEnum bodyEnum, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
-            where TEnum : Enum where TParameters : class
+            where TEnum : Enum where TParameters : IEmailParameters
         {
             Body = await RenderComponent(bodyEnum, renderTemplateStrategy, parameters);
             return this;
@@ -80,7 +80,7 @@ namespace App.RenderEmail.RenderEmail
         /// <returns>A task that represents the asynchronous operation. The task result is the current instance of <see
         /// cref="RenderEmailBuilder"/>, allowing for method chaining.</returns>
         public async Task<RenderEmailBuilder> SetFooter<TEnum, TParameters>(TEnum footerEnum, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
-            where TEnum : Enum where TParameters : class
+            where TEnum : Enum where TParameters : IEmailParameters
         {
             Footer = await RenderComponent(footerEnum, renderTemplateStrategy, parameters);
             return this;
@@ -88,7 +88,7 @@ namespace App.RenderEmail.RenderEmail
 
 
         private Task<string> RenderComponent<TEnum, TParameters>(TEnum enumValue, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
-            where TEnum : Enum where TParameters : class
+            where TEnum : Enum where TParameters : IEmailParameters
         {
             IEmailTemplate template = _strategy.RenderStrategy(enumValue, renderTemplateStrategy);
             return template.RenderTemplateAsync(parameters);
