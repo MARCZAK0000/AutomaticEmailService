@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="App.EmailRender.Shared" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageId>App.EmailRender</PackageId>
+    <Version>2.0.1</Version>
+    <Authors>MARCZAK0000</Authors>
+    <Description>Email Render</Description>
+    <PackageTags>email, email render</PackageTags>
+  </PropertyGroup>
+
 </Project>
