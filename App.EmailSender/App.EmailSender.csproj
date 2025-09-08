@@ -2,25 +2,24 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>App.EmailBuilder</RootNamespace>
+    <RootNamespace>App.EmailSender</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   
   <PropertyGroup>
-    <PackageId>EmailBuilder</PackageId>
-    <Version>1.0.8</Version>
+    <PackageId>App.EmailSender</PackageId>
+    <Version>2.0.1</Version>
     <Authors>MARCZAK0000</Authors>
     <Description>Email builder</Description>
     <PackageTags>email, email builder</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Files\*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="E-BangAppRabbitSharedClass" Version="1.0.8" />
+    <PackageReference Include="MailKit" Version="4.13.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+    <PackageReference Include="MimeKit" Version="4.13.0" />
   </ItemGroup>
  
 </Project>

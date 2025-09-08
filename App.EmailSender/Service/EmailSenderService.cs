@@ -17,6 +17,16 @@ namespace App.EmailBuilder.Service
             _emailSenderOptions = emailSenderOptions;
         }
 
+        /// <summary>
+        /// Sends an email asynchronously using the specified MIME message and cancellation token.
+        /// </summary>
+        /// <remarks>This method establishes a connection to the SMTP server, authenticates using the
+        /// configured credentials, and sends the provided email. It uses STARTTLS for secure communication with the
+        /// SMTP server. If the operation fails, an exception is logged and rethrown.</remarks>
+        /// <param name="mimeMessage">The <see cref="MimeMessage"/> representing the email to be sent. This includes the sender, recipients,
+        /// subject, and body of the email.</param>
+        /// <param name="token">A <see cref="CancellationToken"/> that can be used to cancel the operation.</param>
+        /// <returns><see langword="true"/> if the email is successfully sent; otherwise, an exception is thrown.</returns>
         public async Task<bool> SendEmailAsync(MimeMessage mimeMessage, CancellationToken token)
         {
             try
