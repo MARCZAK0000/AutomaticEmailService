@@ -2,6 +2,6 @@
 {
     public interface IEmailTemplate
     {
-        Task<string> RenderTemplateAsync<TParameters>(TParameters parameters) where TParameters : class;
+        Task<string> RenderTemplateAsync<TParameters>(TParameters parameters) where TParameters : IEmailParameters;
     }
 }
