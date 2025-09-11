@@ -22,7 +22,8 @@ namespace App.EmailBuilder.Extensions
             options(senderOptions);
 
             //Register Services 
-            services.AddTransient<IEmailSenderService, EmailSenderService>();
+            services.AddScoped<IEmailSenderService, EmailSenderService>();
+            services.AddSingleton(senderOptions);
             return services;
         }
     }

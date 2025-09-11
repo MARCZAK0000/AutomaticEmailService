@@ -9,7 +9,7 @@
   
   <PropertyGroup>
     <PackageId>App.EmailSender</PackageId>
-    <Version>2.0.1</Version>
+    <Version>2.0.3</Version>
     <Authors>MARCZAK0000</Authors>
     <Description>Email builder</Description>
     <PackageTags>email, email builder</PackageTags>
