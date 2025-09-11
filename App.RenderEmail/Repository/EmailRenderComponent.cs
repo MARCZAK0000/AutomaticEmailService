@@ -76,9 +76,9 @@ namespace App.RenderEmail.Repository
             return await RenderedComponent<TComponent>(ParameterView.FromDictionary(parameters));
         }
 
-        private async Task<string> RenderedComponent<T>(ParameterView parameters) where T : IComponent
+        private Task<string> RenderedComponent<T>(ParameterView parameters) where T : IComponent
         {
-            return await _htmlRenderer.Dispatcher.InvokeAsync(async () =>
+            return _htmlRenderer.Dispatcher.InvokeAsync(async () =>
             {
                 HtmlRootComponent component = await _htmlRenderer.RenderComponentAsync<T>(parameters);
                 return component.ToHtmlString();
