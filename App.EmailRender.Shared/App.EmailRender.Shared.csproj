@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>App.EmailRender.Shared</PackageId>
-    <Version>2.0.6</Version>
+    <Version>2.0.11</Version>
     <Authors>MARCZAK0000</Authors>
     <Description>Email Render Shared</Description>
     <PackageTags>email, email render shared</PackageTags>
