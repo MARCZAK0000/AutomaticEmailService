@@ -1,5 +1,8 @@
 ﻿
 using App.EmailRender.Shared.Abstraction;
+using App.EmailRender.Shared.Parameters;
+using App.EmailRender.Shared.Strategy;
+using App.RenderEmail.ParametersType;
 using App.RenderEmail.RenderEmail;
 using App.RenderEmail.Repository;
 using App.RenderEmail.Strategy;
@@ -15,6 +18,7 @@ namespace App.RenderEmail.Extensions
             services.AddScoped<HtmlRenderer>();
             services.AddSingleton<IEmailRenderStrategy, EmailRenderStrategy>();
             services.AddScoped<IEmailRenderComponent,EmailRenderComponent>();
+            services.AddScoped<IEmailParametersType, EmailParametersType>();
             services.AddScoped<RenderEmailBuilder>();
             return services;
         }

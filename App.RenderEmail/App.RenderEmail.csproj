@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="App.EmailRender.Shared" Version="2.0.6" />
+    <PackageReference Include="App.EmailRender.Shared" Version="2.0.11" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
   </ItemGroup>
 
   <PropertyGroup>
     <PackageId>App.EmailRender</PackageId>
-    <Version>2.0.7</Version>
+    <Version>2.0.11</Version>
     <Authors>MARCZAK0000</Authors>
     <Description>Email Render</Description>
     <PackageTags>email, email render</PackageTags>

@@ -1,5 +1,8 @@
 ﻿using App.EmailRender.Shared.Abstraction;
-using App.RenderEmail.Strategy;
+using App.EmailRender.Shared.Parameters;
+using App.EmailRender.Shared.Strategy;
+using App.RenderEmail.RenderExceptons;
+using System.Text.Json;
 
 namespace App.RenderEmail.RenderEmail
 {
@@ -15,15 +18,18 @@ namespace App.RenderEmail.RenderEmail
     {
         private string Header { get; set; }
         private string Body { get; set; }
-        private string Footer { get;  set; }
-        public RenderEmailBuilder(IEmailRenderStrategy strategy)
+        private string Footer { get; set; }
+        public RenderEmailBuilder(IEmailRenderStrategy strategy, IEmailParametersType emailParametersType)
         {
             Header = string.Empty;
             Body = string.Empty;
             Footer = string.Empty;
             _strategy = strategy;
+            _emailParametersType = emailParametersType;
         }
         private readonly IEmailRenderStrategy _strategy;
+
+        private readonly IEmailParametersType _emailParametersType;
 
         /// <summary>
         /// Sets the header of the email by rendering a specified component using the provided template strategy and
@@ -40,7 +46,7 @@ namespace App.RenderEmail.RenderEmail
         /// header component.</param>
         /// <param name="parameters">The parameters required to render the header component. This must be a reference type.</param>
         /// <returns>A <see cref="RenderEmailBuilder"/> instance with the header set, allowing for method chaining.</returns>
-        public async Task<RenderEmailBuilder> SetHeader<TEnum, TParameters>(TEnum headerEnum, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
+        public async Task<RenderEmailBuilder> SetHeader<TEnum, TParameters>(TEnum headerEnum, Dictionary<TEnum, EmailBuilderMetadata<IEmailTemplate, TParameters>> renderTemplateStrategy, JsonElement parameters)
             where TEnum : Enum where TParameters : IEmailParameters
         {
             Header = await RenderComponent(headerEnum, renderTemplateStrategy, parameters);
@@ -58,7 +64,7 @@ namespace App.RenderEmail.RenderEmail
         /// <param name="renderTemplateStrategy">A dictionary mapping enumeration values to their corresponding email templates.</param>
         /// <param name="parameters">The parameters to use when rendering the selected template. Must be a reference type.</param>
         /// <returns>A <see cref="RenderEmailBuilder"/> instance with the rendered body set, allowing for method chaining.</returns>
-        public async Task<RenderEmailBuilder> SetBody<TEnum, TParameters>(TEnum bodyEnum, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
+        public async Task<RenderEmailBuilder> SetBody<TEnum, TParameters>(TEnum bodyEnum, Dictionary<TEnum, EmailBuilderMetadata<IEmailTemplate, TParameters>> renderTemplateStrategy, JsonElement parameters)
             where TEnum : Enum where TParameters : IEmailParameters
         {
             Body = await RenderComponent(bodyEnum, renderTemplateStrategy, parameters);
@@ -79,7 +85,7 @@ namespace App.RenderEmail.RenderEmail
         /// <param name="parameters">The parameters required to render the footer template. Can include data specific to the template.</param>
         /// <returns>A task that represents the asynchronous operation. The task result is the current instance of <see
         /// cref="RenderEmailBuilder"/>, allowing for method chaining.</returns>
-        public async Task<RenderEmailBuilder> SetFooter<TEnum, TParameters>(TEnum footerEnum, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
+        public async Task<RenderEmailBuilder> SetFooter<TEnum, TParameters>(TEnum footerEnum, Dictionary<TEnum, EmailBuilderMetadata<IEmailTemplate, TParameters>> renderTemplateStrategy, JsonElement parameters)
             where TEnum : Enum where TParameters : IEmailParameters
         {
             Footer = await RenderComponent(footerEnum, renderTemplateStrategy, parameters);
@@ -87,13 +93,26 @@ namespace App.RenderEmail.RenderEmail
         }
 
 
-        private Task<string> RenderComponent<TEnum, TParameters>(TEnum enumValue, Dictionary<TEnum, IEmailTemplate> renderTemplateStrategy, TParameters parameters)
+        private Task<string> RenderComponent<TEnum, TParameters>(TEnum enumValue, Dictionary<TEnum, EmailBuilderMetadata<IEmailTemplate, TParameters>> renderTemplateStrategy, JsonElement parameters)
             where TEnum : Enum where TParameters : IEmailParameters
         {
             IEmailTemplate template = _strategy.RenderStrategy(enumValue, renderTemplateStrategy);
-            return template.RenderTemplateAsync(parameters);
+            Type parametersType = _emailParametersType.GetEmailParametersType(enumValue, renderTemplateStrategy);
+            IEmailParameters parameter = Deserialization<IEmailParameters>(parameters, parametersType);
+            return template.RenderTemplateAsync(parameter);
         }
 
+
+        private TParameters Deserialization <TParameters>(JsonElement parameters, Type parameterType)
+            where TParameters : IEmailParameters
+        {
+            TParameters? parameter = (TParameters?)JsonSerializer.Deserialize(parameters, parameterType);
+            if (parameter is null)
+            {
+                throw new DeserializationNullException($"Parameters cannot be null : {typeof(TParameters)}");
+            }
+            return parameter;
+        }
         /// <summary>
         /// Constructs an <see cref="EmailMessage"/> instance by combining the header, body, and footer.
         /// </summary>
